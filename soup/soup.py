@@ -95,7 +95,15 @@ for i in links:
 
 # transforme the list to a pandas dataframe and export to csv
 bs_result = pd.DataFrame(result, columns=["player_name","date_of_birth","elo","wins","losses","total","ww_perc","wl_perc","bw_perc","bl_perc","avg_diff"])
-bs_result.to_csv('bs_result.csv')
+
+path = input('Please provide path for the csv file to be saved (name of the csv file is Go_Players_Data_Selenium.csv)')
+if path =='':
+    file_path=""
+    bs_result.to_csv('Go_Players_Data_BS.csv')
+else:
+    file_path = path + '/Go_Players_Data_BS.csv'
+    bs_result.to_csv(file_path)
+
 
 ## Measure the execution time
 
