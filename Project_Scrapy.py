@@ -9,11 +9,12 @@ class Info(scrapy.Item): #create scrapy fields
     white_lose = scrapy.Field()
     black_win = scrapy.Field()
     black_lose = scrapy.Field()
+    rating = scrapy.Field()
     average_rating_differences = scrapy.Field()
 
 
 class ProjectSpider(scrapy.Spider):
-    name = "ultimate" #name the scrapy
+    name = "scrapy_output" #name the scrapy
     allowed_domains = ["www.goratings.org"] #allowed domain name
     try:
         with open("link_lists.csv", "rt") as f:
@@ -28,6 +29,7 @@ class ProjectSpider(scrapy.Spider):
         wins_xpath = '//th[text()="Wins"]/following-sibling::*/text()'
         losses_xpath = '//th[text()="Losses"]/following-sibling::*/text()'
         total_xpath= '//th[text()="Total"]/following-sibling::*/text()'
+        rating_xpath ='//table[2]/tr[2]/td[2]/text()'
 
         colors_list = [] #create lists for the color the player plays with
         wins_losses_list=[] #list containing either loss or wim
@@ -65,7 +67,7 @@ class ProjectSpider(scrapy.Spider):
             elif colors_list[i]== "Black" and wins_losses_list[i]== "Loss":
                 bl = bl + 1
         for i in range(0,10):
-             diff = diff + int(opponent_elo_list[i])-int(player_elo_list[i]) #for the last 10 games, calculate the difference
+             diff = diff - int(opponent_elo_list[i])+int(player_elo_list[i]) #for the last 10 games, calculate the difference
 #between the player's and the opponents ratings
 
         p['player'] = response.xpath(player_xpath).getall()
@@ -76,8 +78,8 @@ class ProjectSpider(scrapy.Spider):
         p['white_lose'] = wl/10
         p['black_win'] = bw/10
         p['black_lose'] = bl/10
+        p['rating'] =response.xpath(rating_xpath).getall()
         p['total'] = response.xpath(total_xpath).getall()
         p['average_rating_differences'] = diff/10 #calculate the average difference between the ratings of the player and the opponent
 
         yield p
-# scrapy crawl basic_info -o Info.csv -t csv
