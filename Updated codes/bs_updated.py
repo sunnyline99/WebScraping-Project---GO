@@ -93,7 +93,7 @@ for i in links:
 # create a list with all scraped data
     result.append([player_name,date_of_birth,elo,wins,losses,total,ww_perc,wl_perc,bw_perc,bl_perc,avg_diff])
 
-# transforme the list to a pandas dataframe and export to csv
+# transform the list to a pandas dataframe and export to csv
 bs_result = pd.DataFrame(result, columns=["player_name","date_of_birth","current_elo","wins","losses","total","white_win_perc","white_lose_perc","black_win_perc","black_lose_perc","average_rating_differences"])
 
 path = input('Please provide path for the csv file to be saved (name of the csv file is Go_Players_Data_BS.csv)')
