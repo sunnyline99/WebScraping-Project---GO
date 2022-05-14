@@ -32,7 +32,7 @@ tags = bs.find_all('a', {'href':re.compile('.*\/players\/.*')})
 links=[]
 
 # add full links for the first 100 players pages to the list
-for i in range(0,100):
+for i in range(0,no_pages):
     links.append("https://www.goratings.org/en/"+tags[i]['href'])
 
 # create an empty list for storing scraped information
